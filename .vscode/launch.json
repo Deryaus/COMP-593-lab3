@@ -11,7 +11,7 @@
             "program": "lab3.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": "C:\\git-repos\\COMP-593-lab3\\sales_data.csv"
+            "args": ["C:\\git-repos\\COMP-593-lab3\\sales_data.csv"]
         }
     ]
 }

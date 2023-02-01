@@ -9,8 +9,6 @@ def main():
     orders_dir = create_orders_dir(sales_csv)
     process_sales_data(sales_csv, orders_dir)
 
-    return
-
 # Get path of sales data CSV file from the command line
 def get_sales_csv():  
 # Check whether command line parameter provided
@@ -42,19 +40,12 @@ def create_orders_dir(sales_csv):
         os.makedirs(orders_dir)
         return orders_dir
 
-
-
-
 # Split the sales data into individual orders and save to Excel sheets
 def process_sales_data(sales_csv, orders_dir):
 # Import the sales data from the CSV file into a DataFrame
     sales_df = pd.read_csv(sales_csv)
-
-
-
 # Insert a new "TOTAL PRICE" column into the DataFrame
     sales_df.insert(7, 'TOTAL PRICE', sales_df['ITEM QUANTITY'] * sales_df['ITEM PRICE'])
-
 
 # Remove columns from the DataFrame that are not needed
     sales_df.drop(columns=['ADDRESS', 'CITY', 'STATE', 'POSTAL CODE', 'COUNTRY'], inplace=True)
@@ -66,14 +57,10 @@ def process_sales_data(sales_csv, orders_dir):
         #add the grand total Row
         grand_total = order_df['TOTAL PRICE'].sum()
         grand_total_df = pd.DataFrame({'ITEM PRICE': ['GRAND TOTAL'], 'TOTAL PRICE': [grand_total]})
-        order_df = pd.concat(order_df, grand_total_df)
+        order_df = pd.concat([order_df, grand_total_df])
         export_order_to_excel(order_id, order_df, orders_dir)
-
-
         break
         
-
-
 def export_order_to_excel(order_id, order_df, orders_dir):
     #Determine the file name and path for the order excel sheet
     customer_name = order_df['CUSTOMER NAME'].values[0]
@@ -81,13 +68,7 @@ def export_order_to_excel(order_id, order_df, orders_dir):
     order_file = f'Order{order_id}_{customer_name}.xlsx'
     order_path = os.path.join(orders_dir, order_file)
     sheet_name = f'Order #{order_id}'
-    order_df.to_excel(order_path, sheet_name=sheet_name)
-
-
-    return
-
-
-
+    order_df.to_excel(order_path, index=False, sheet_name=sheet_name)
 
 if __name__ == '__main__':
     main()
